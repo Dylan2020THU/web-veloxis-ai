@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>真实智能（True Intelligence）· 课程总图 v2</title>
+    <ownerName>AI Course Designer</ownerName>
+    <expansionState>0,1,2,3,4,5,6</expansionState>
+  </head>
+  <body>
+    <outline text="真实智能（True Intelligence）· 课程总图 v2">
+      <outline text="第 0 章 · 课程总览与方法论">
+        <outline text="0.1 AI 三大范式与本课程的工程分类法"/>
+        <outline text="0.2 学习路径地图、难度梯度、推荐节奏（6 / 12 / 24 周三种排布）"/>
+        <outline text="0.3 工具栈：Python / NumPy / PyTorch / scikit-learn / Hugging Face / Ray / vLLM"/>
+        <outline text="0.4 学习方法：论文阅读法、复现方法、Benchmark 评测法"/>
+      </outline>
+
+      <outline text="Part Ⅰ · 数学基础（Mathematical Foundation） ★">
+        <outline text="1.1 线性代数">
+          <outline text="向量空间"/>
+          <outline text="矩阵分解"/>
+          <outline text="SVD"/>
+          <outline text="特征值与谱"/>
+        </outline>
+        <outline text="1.2 微积分与张量微积分">
+          <outline text="偏导"/>
+          <outline text="链式法则"/>
+          <outline text="雅可比"/>
+          <outline text="海森"/>
+        </outline>
+        <outline text="1.3 概率论与数理统计">
+          <outline text="分布族"/>
+          <outline text="最大似然"/>
+          <outline text="贝叶斯推断"/>
+          <outline text="假设检验"/>
+        </outline>
+        <outline text="1.4 随机过程">
+          <outline text="马尔可夫链"/>
+          <outline text="随机近似（RL 必备）"/>
+        </outline>
+        <outline text="1.5 凸优化">
+          <outline text="凸集 / 凸函数"/>
+          <outline text="KKT"/>
+          <outline text="对偶"/>
+          <outline text="一阶 / 二阶方法"/>
+        </outline>
+        <outline text="1.6 信息论">
+          <outline text="熵"/>
+          <outline text="交叉熵"/>
+          <outline text="KL 散度"/>
+          <outline text="互信息"/>
+        </outline>
+        <outline text="1.7 数值计算">
+          <outline text="浮点误差"/>
+          <outline text="数值稳定性"/>
+          <outline text="自动微分原理"/>
+        </outline>
+      </outline>
+
+      <outline text="Part Ⅱ · 机器学习：机器意志（Machine Will）">
+        <outline text="2.1 监督学习 · 回归 ★ [需 1.1, 1.2, 1.5]">
+          <outline text="线性模型">
+            <outline text="线性回归"/>
+            <outline text="岭回归"/>
+            <outline text="Lasso"/>
+            <outline text="ElasticNet"/>
+          </outline>
+          <outline text="非线性回归">
+            <outline text="多项式回归"/>
+            <outline text="支持向量回归 SVR"/>
+          </outline>
+          <outline text="树模型">
+            <outline text="决策树"/>
+            <outline text="随机森林"/>
+            <outline text="GBDT"/>
+          </outline>
+          <outline text="时序回归（统计派）">
+            <outline text="ARIMA"/>
+            <outline text="SARIMA"/>
+            <outline text="Prophet"/>
+          </outline>
+          <outline text="贝叶斯回归">
+            <outline text="高斯过程回归 GPR"/>
+          </outline>
+        </outline>
+
+        <outline text="2.2 监督学习 · 分类 ★ [需 1.3]">
+          <outline text="线性模型">
+            <outline text="Logistic Regression"/>
+            <outline text="LDA / QDA"/>
+          </outline>
+          <outline text="核方法">
+            <outline text="SVM"/>
+            <outline text="Kernel Ridge Classifier"/>
+          </outline>
+          <outline text="概率模型">
+            <outline text="Naive Bayes"/>
+            <outline text="贝叶斯网络"/>
+          </outline>
+          <outline text="基于距离">
+            <outline text="KNN"/>
+          </outline>
+          <outline text="树模型">
+            <outline text="决策树"/>
+            <outline text="随机森林"/>
+          </outline>
+          <outline text="评估">
+            <outline text="混淆矩阵"/>
+            <outline text="ROC / AUC"/>
+            <outline text="PR / F1"/>
+            <outline text="MAP"/>
+            <outline text="不平衡处理"/>
+          </outline>
+        </outline>
+
+        <outline text="2.3 集成学习（独立章节） ★★">
+          <outline text="Bagging">
+            <outline text="Random Forest 复盘"/>
+          </outline>
+          <outline text="Boosting">
+            <outline text="AdaBoost"/>
+            <outline text="GBDT"/>
+            <outline text="XGBoost"/>
+            <outline text="LightGBM"/>
+            <outline text="CatBoost"/>
+          </outline>
+          <outline text="Stacking / Voting / Blending"/>
+        </outline>
+
+        <outline text="2.4 无监督学习 · 聚类 ★">
+          <outline text="K-Means / K-Means++ / Mini-Batch K-Means"/>
+          <outline text="层次聚类（Agglomerative / Divisive）"/>
+          <outline text="密度聚类">
+            <outline text="DBSCAN"/>
+            <outline text="HDBSCAN"/>
+          </outline>
+          <outline text="谱聚类 Spectral Clustering"/>
+          <outline text="高斯混合 GMM（EM 算法）"/>
+        </outline>
+
+        <outline text="2.5 无监督学习 · 降维 ★★">
+          <outline text="线性方法">
+            <outline text="PCA"/>
+            <outline text="ICA"/>
+            <outline text="FA"/>
+          </outline>
+          <outline text="非线性流形">
+            <outline text="t-SNE"/>
+            <outline text="UMAP"/>
+            <outline text="Isomap"/>
+            <outline text="LLE"/>
+            <outline text="Kernel PCA"/>
+          </outline>
+          <outline text="矩阵分解">
+            <outline text="NMF"/>
+            <outline text="SVD 应用"/>
+          </outline>
+        </outline>
+
+        <outline text="2.6 无监督学习 · 关联与异常 ★">
+          <outline text="关联规则">
+            <outline text="Apriori"/>
+            <outline text="FP-Growth"/>
+          </outline>
+          <outline text="异常检测">
+            <outline text="Isolation Forest"/>
+            <outline text="One-Class SVM"/>
+            <outline text="LOF"/>
+            <outline text="Autoencoder-based（前向到 DL）"/>
+          </outline>
+        </outline>
+
+        <outline text="2.7 概率图模型与传统生成 ★★ [需 1.3]">
+          <outline text="贝叶斯网络"/>
+          <outline text="马尔可夫随机场"/>
+          <outline text="隐马尔可夫 HMM"/>
+          <outline text="条件随机场 CRF"/>
+          <outline text="EM 算法系统讲解"/>
+        </outline>
+
+        <outline text="2.8 半监督学习 ★★">
+          <outline text="自训练">
+            <outline text="Pseudo-Labeling"/>
+            <outline text="Self-Training"/>
+          </outline>
+          <outline text="协同训练">
+            <outline text="Co-Training"/>
+            <outline text="多视角学习"/>
+          </outline>
+          <outline text="基于图">
+            <outline text="Label Propagation"/>
+            <outline text="Label Spreading"/>
+            <outline text="GCN"/>
+          </outline>
+          <outline text="一致性正则与 SOTA">
+            <outline text="MixMatch"/>
+            <outline text="ReMixMatch"/>
+            <outline text="FixMatch"/>
+            <outline text="FlexMatch"/>
+            <outline text="FreeMatch"/>
+          </outline>
+          <outline text="生成式方法">
+            <outline text="Semi-Supervised GAN"/>
+            <outline text="SSL-VAE"/>
+            <outline text="CatGAN"/>
+          </outline>
+        </outline>
+
+        <outline text="2.9 模型评估、调参与可解释性 ★★（新增）">
+          <outline text="交叉验证 / Nested CV"/>
+          <outline text="贝叶斯调参（Optuna）"/>
+          <outline text="偏差-方差权衡"/>
+          <outline text="学习曲线"/>
+          <outline text="可解释性">
+            <outline text="SHAP"/>
+            <outline text="LIME"/>
+            <outline text="Permutation Importance"/>
+          </outline>
+          <outline text="公平性与偏倚检测"/>
+        </outline>
+
+        <outline text="2.10 Capstone：Kaggle 表格类比赛全流程实战"/>
+      </outline>
+
+      <outline text="Part Ⅲ · 深度学习：深度觉醒（Deep Awakening）">
+        <outline text="3.1 深度学习数学补强 ★★ [需 Part Ⅰ]">
+          <outline text="张量微积分与自动微分实现"/>
+          <outline text="初始化理论">
+            <outline text="Xavier"/>
+            <outline text="Kaiming"/>
+          </outline>
+          <outline text="归一化理论">
+            <outline text="BN"/>
+            <outline text="LN"/>
+            <outline text="GN"/>
+            <outline text="RMSNorm"/>
+          </outline>
+          <outline text="损失景观"/>
+          <outline text="双下降"/>
+          <outline text="Lottery Ticket"/>
+        </outline>
+
+        <outline text="3.2 神经网络基础 ★">
+          <outline text="多层感知机 MLP"/>
+          <outline text="计算图"/>
+          <outline text="前向 / 反向传播"/>
+          <outline text="优化器">
+            <outline text="SGD"/>
+            <outline text="Momentum"/>
+            <outline text="Adam"/>
+            <outline text="AdamW"/>
+            <outline text="Lion"/>
+          </outline>
+          <outline text="Batch / Mini-batch / Online Learning"/>
+          <outline text="正则化">
+            <outline text="L1 / L2"/>
+            <outline text="Dropout"/>
+            <outline text="Early Stopping"/>
+            <outline text="数据增强"/>
+          </outline>
+        </outline>
+
+        <outline text="3.3 经典神经网络 ★★">
+          <outline text="DNN"/>
+          <outline text="CNN">
+            <outline text="LeNet"/>
+            <outline text="AlexNet / VGG / GoogLeNet"/>
+            <outline text="ResNet"/>
+            <outline text="ConvNeXt"/>
+          </outline>
+          <outline text="RNN"/>
+          <outline text="LSTM"/>
+          <outline text="GRU"/>
+          <outline text="TCN"/>
+          <outline text="Transformer（Attention Is All You Need 精讲）"/>
+        </outline>
+
+        <outline text="3.4 注意力机制家族 ★★★（新增）">
+          <outline text="Self / Cross Attention"/>
+          <outline text="Multi-Head Attention"/>
+          <outline text="Grouped-Query Attention"/>
+          <outline text="Flash Attention"/>
+          <outline text="Sliding Window"/>
+          <outline text="Sparse Attention"/>
+          <outline text="MLA（Multi-head Latent Attention）"/>
+        </outline>
+
+        <outline text="3.5 自监督学习 ★★★（独立章节）">
+          <outline text="CV 派">
+            <outline text="SimCLR"/>
+            <outline text="MoCo"/>
+            <outline text="BYOL"/>
+            <outline text="DINO"/>
+            <outline text="MAE"/>
+          </outline>
+          <outline text="NLP 派">
+            <outline text="MLM（BERT）"/>
+            <outline text="CLM（GPT）"/>
+            <outline text="SpanBERT"/>
+            <outline text="ELECTRA"/>
+          </outline>
+          <outline text="多模态派">
+            <outline text="CLIP"/>
+            <outline text="SigLIP"/>
+          </outline>
+        </outline>
+
+        <outline text="3.6 大语言模型 LLM ★★★（新增）">
+          <outline text="预训练范式">
+            <outline text="BERT 系"/>
+            <outline text="GPT 系"/>
+            <outline text="T5"/>
+            <outline text="PaLM"/>
+          </outline>
+          <outline text="主流开源模型架构对比">
+            <outline text="LLaMA"/>
+            <outline text="Qwen"/>
+            <outline text="Mistral"/>
+            <outline text="DeepSeek"/>
+          </outline>
+          <outline text="闭源前沿（架构推断）">
+            <outline text="GPT-5"/>
+            <outline text="Claude"/>
+            <outline text="Gemini"/>
+          </outline>
+          <outline text="MoE 混合专家">
+            <outline text="Switch Transformer"/>
+            <outline text="Mixtral"/>
+            <outline text="DeepSeek-MoE"/>
+          </outline>
+          <outline text="长上下文">
+            <outline text="RoPE"/>
+            <outline text="ALiBi"/>
+            <outline text="YaRN"/>
+            <outline text="上下文窗口扩展"/>
+          </outline>
+          <outline text="推理时计算">
+            <outline text="Chain-of-Thought"/>
+            <outline text="o1 / o3 思维链"/>
+            <outline text="Test-time Scaling"/>
+          </outline>
+        </outline>
+
+        <outline text="3.7 视觉与多模态 ★★★（新增）">
+          <outline text="图像主干">
+            <outline text="ViT"/>
+            <outline text="Swin"/>
+            <outline text="DeiT"/>
+            <outline text="ConvNeXt v2"/>
+          </outline>
+          <outline text="检测 / 分割">
+            <outline text="DETR"/>
+            <outline text="SAM"/>
+            <outline text="SAM 2"/>
+          </outline>
+          <outline text="视觉-语言">
+            <outline text="CLIP"/>
+            <outline text="BLIP-2"/>
+            <outline text="LLaVA"/>
+            <outline text="Qwen-VL"/>
+            <outline text="InternVL"/>
+          </outline>
+          <outline text="视频理解与生成（前向到 3.8）"/>
+        </outline>
+
+        <outline text="3.8 深度生成模型 ★★★（自 ML 模块迁移）">
+          <outline text="VAE 家族">
+            <outline text="VAE"/>
+            <outline text="β-VAE"/>
+            <outline text="VQ-VAE"/>
+          </outline>
+          <outline text="GAN 家族">
+            <outline text="DCGAN"/>
+            <outline text="StyleGAN"/>
+            <outline text="CycleGAN"/>
+          </outline>
+          <outline text="Normalizing Flow"/>
+          <outline text="扩散模型主线">
+            <outline text="DDPM"/>
+            <outline text="DDIM"/>
+            <outline text="Score-based"/>
+            <outline text="LDM / Stable Diffusion 1-3"/>
+            <outline text="Flow Matching"/>
+            <outline text="Rectified Flow"/>
+          </outline>
+          <outline text="视频 / 世界模型">
+            <outline text="Sora"/>
+            <outline text="Veo"/>
+            <outline text="Genie"/>
+          </outline>
+          <outline text="多模态生成应用">
+            <outline text="DALL-E 3"/>
+            <outline text="Midjourney V6"/>
+            <outline text="ControlNet"/>
+            <outline text="IP-Adapter"/>
+          </outline>
+        </outline>
+
+        <outline text="3.9 图神经网络 ★★★（新增）">
+          <outline text="GCN"/>
+          <outline text="GAT"/>
+          <outline text="GraphSAGE"/>
+          <outline text="GIN"/>
+          <outline text="GraphTransformer"/>
+        </outline>
+
+        <outline text="3.10 新架构前沿 ★★★★（新增）">
+          <outline text="状态空间模型">
+            <outline text="S4"/>
+            <outline text="Mamba"/>
+            <outline text="Mamba 2"/>
+          </outline>
+          <outline text="RWKV"/>
+          <outline text="Hyena"/>
+          <outline text="混合架构（Hybrid Transformer-SSM）"/>
+        </outline>
+
+        <outline text="3.11 微调与适配技术 ★★★（新增）">
+          <outline text="全参数微调"/>
+          <outline text="指令微调"/>
+          <outline text="参数高效微调 PEFT">
+            <outline text="LoRA"/>
+            <outline text="QLoRA"/>
+            <outline text="DoRA"/>
+            <outline text="Adapter"/>
+            <outline text="Prefix-Tuning"/>
+            <outline text="IA³"/>
+          </outline>
+          <outline text="数据">
+            <outline text="指令数据合成"/>
+            <outline text="偏好数据构造"/>
+          </outline>
+        </outline>
+
+        <outline text="3.12 训练与推理工程 ★★★★（新增 · 工程化）">
+          <outline text="分布式训练">
+            <outline text="DDP"/>
+            <outline text="FSDP"/>
+            <outline text="ZeRO 1 / 2 / 3"/>
+            <outline text="Megatron TP / PP"/>
+            <outline text="DeepSpeed"/>
+          </outline>
+          <outline text="混合精度"/>
+          <outline text="梯度检查点"/>
+          <outline text="Gradient Accumulation"/>
+          <outline text="推理优化">
+            <outline text="KV-Cache"/>
+            <outline text="PagedAttention"/>
+            <outline text="推测解码"/>
+            <outline text="Continuous Batching"/>
+          </outline>
+          <outline text="量化与压缩">
+            <outline text="GPTQ"/>
+            <outline text="AWQ"/>
+            <outline text="SmoothQuant"/>
+            <outline text="知识蒸馏"/>
+          </outline>
+          <outline text="推理框架">
+            <outline text="vLLM"/>
+            <outline text="SGLang"/>
+            <outline text="TensorRT-LLM"/>
+          </outline>
+        </outline>
+
+        <outline text="3.13 Capstone：从零预训练一个小型 LLM + 指令微调 + 部署"/>
+      </outline>
+
+      <outline text="Part Ⅳ · 强化学习：决策觉醒（Decision Awakening）">
+        <outline text="4.1 RL 理论基础 ★★ [需 1.3, 1.4, 1.5]">
+          <outline text="多臂老虎机">
+            <outline text="ε-greedy"/>
+            <outline text="UCB"/>
+            <outline text="Thompson Sampling"/>
+          </outline>
+          <outline text="马尔可夫决策过程 MDP">
+            <outline text="状态 / 动作 / 奖励 / 转移"/>
+            <outline text="Bellman 方程"/>
+          </outline>
+          <outline text="动态规划">
+            <outline text="策略迭代"/>
+            <outline text="价值迭代"/>
+            <outline text="状态价值函数"/>
+            <outline text="动作价值函数"/>
+          </outline>
+          <outline text="蒙特卡洛方法">
+            <outline text="On-policy MC"/>
+            <outline text="Off-policy MC"/>
+          </outline>
+          <outline text="时序差分 TD">
+            <outline text="TD(0)"/>
+            <outline text="TD(λ)"/>
+            <outline text="Eligibility Traces"/>
+          </outline>
+        </outline>
+
+        <outline text="4.2 经典单智能体算法 ★★">
+          <outline text="表格法">
+            <outline text="Q-learning"/>
+            <outline text="SARSA"/>
+            <outline text="Expected SARSA"/>
+          </outline>
+          <outline text="策略梯度">
+            <outline text="REINFORCE"/>
+            <outline text="Baseline 与方差缩减"/>
+          </outline>
+          <outline text="值函数近似">
+            <outline text="DQN"/>
+            <outline text="Double DQN"/>
+            <outline text="Dueling DQN"/>
+            <outline text="Rainbow"/>
+          </outline>
+          <outline text="Actor-Critic">
+            <outline text="A2C"/>
+            <outline text="A3C"/>
+          </outline>
+          <outline text="连续动作">
+            <outline text="DDPG"/>
+            <outline text="TD3"/>
+            <outline text="SAC"/>
+          </outline>
+          <outline text="信赖域系">
+            <outline text="TRPO"/>
+            <outline text="PPO（重点）"/>
+          </outline>
+        </outline>
+
+        <outline text="4.3 探索与课程学习 ★★★（新增）">
+          <outline text="ICM"/>
+          <outline text="RND"/>
+          <outline text="Count-based Exploration"/>
+          <outline text="Curriculum Learning"/>
+          <outline text="Hindsight Experience Replay (HER)"/>
+        </outline>
+
+        <outline text="4.4 多智能体 RL ★★★">
+          <outline text="合作 / 竞争 / 混合范式"/>
+          <outline text="集中训练分散执行 CTDE"/>
+          <outline text="MADDPG"/>
+          <outline text="MAPPO"/>
+          <outline text="QMIX"/>
+          <outline text="VDN"/>
+        </outline>
+
+        <outline text="4.5 模仿学习与逆 RL ★★★（新增）">
+          <outline text="行为克隆 BC"/>
+          <outline text="DAgger"/>
+          <outline text="逆强化学习 IRL"/>
+          <outline text="GAIL"/>
+          <outline text="AIRL"/>
+        </outline>
+
+        <outline text="4.6 分层与基于模型 RL ★★★（新增 + 整理）">
+          <outline text="分层 RL">
+            <outline text="Options Framework"/>
+            <outline text="Feudal Networks"/>
+          </outline>
+          <outline text="基于模型">
+            <outline text="Dyna"/>
+            <outline text="PETS"/>
+            <outline text="PlaNet"/>
+            <outline text="Dreamer v1-v3"/>
+            <outline text="MuZero"/>
+          </outline>
+          <outline text="实验性（标注论文出处与年份）">
+            <outline text="DiscoRL"/>
+            <outline text="GenPO"/>
+            <outline text="GREO"/>
+          </outline>
+        </outline>
+
+        <outline text="4.7 离线 RL 与安全 RL ★★★（新增）">
+          <outline text="Offline RL">
+            <outline text="BCQ"/>
+            <outline text="CQL"/>
+            <outline text="IQL"/>
+            <outline text="Decision Transformer"/>
+          </outline>
+          <outline text="安全 RL / 约束 RL">
+            <outline text="CPO"/>
+            <outline text="Lagrangian 方法"/>
+          </outline>
+        </outline>
+
+        <outline text="4.8 Game-Playing 与自博弈 ★★★（新增）">
+          <outline text="AlphaGo"/>
+          <outline text="AlphaGo Zero"/>
+          <outline text="AlphaZero"/>
+          <outline text="MuZero"/>
+          <outline text="OpenAI Five"/>
+          <outline text="AlphaStar"/>
+        </outline>
+
+        <outline text="4.9 LLM 时代的 RL：对齐与偏好优化 ★★★★（重磅 · 新增）">
+          <outline text="RLHF 完整流水线">
+            <outline text="SFT（监督微调；属监督学习）"/>
+            <outline text="Reward Model 训练"/>
+            <outline text="PPO-RLHF"/>
+          </outline>
+          <outline text="RLAIF"/>
+          <outline text="Constitutional AI"/>
+          <outline text="偏好优化族（形式监督，源自 RL 思想）">
+            <outline text="DPO"/>
+            <outline text="IPO"/>
+            <outline text="KTO"/>
+            <outline text="SimPO"/>
+          </outline>
+          <outline text="GRPO（DeepSeek-R1 同款）"/>
+          <outline text="推理增强 RL">
+            <outline text="PRM"/>
+            <outline text="ORM"/>
+            <outline text="Process Reward"/>
+          </outline>
+          <outline text="Rejection Sampling Fine-tuning / RFT"/>
+        </outline>
+
+        <outline text="4.10 Capstone：RLHF mini 复现（小模型 + 偏好数据 + PPO / DPO）"/>
+      </outline>
+
+      <outline text="Part Ⅴ · 横向能力栈（新增）">
+        <outline text="5.1 数据工程 ★★">
+          <outline text="数据采集"/>
+          <outline text="数据清洗"/>
+          <outline text="去重"/>
+          <outline text="去毒"/>
+          <outline text="标注体系"/>
+          <outline text="合成数据">
+            <outline text="Self-Instruct"/>
+            <outline text="Evol-Instruct"/>
+          </outline>
+          <outline text="数据增强">
+            <outline text="CV"/>
+            <outline text="NLP"/>
+            <outline text="Audio"/>
+          </outline>
+        </outline>
+
+        <outline text="5.2 评测体系 ★★★">
+          <outline text="ML 经典指标体系"/>
+          <outline text="LLM 评测">
+            <outline text="MMLU"/>
+            <outline text="GSM8K"/>
+            <outline text="HumanEval"/>
+            <outline text="MT-Bench"/>
+            <outline text="Chatbot Arena"/>
+          </outline>
+          <outline text="LLM-as-Judge"/>
+          <outline text="Reward Hacking 检测"/>
+          <outline text="安全评测">
+            <outline text="红队"/>
+            <outline text="Jailbreak 测试"/>
+          </outline>
+        </outline>
+
+        <outline text="5.3 AI Agent 与工具使用 ★★★★（2025-2026 重点）">
+          <outline text="ReAct"/>
+          <outline text="Plan-and-Execute"/>
+          <outline text="Reflexion"/>
+          <outline text="Function Calling"/>
+          <outline text="Tool Use"/>
+          <outline text="Code Interpreter"/>
+          <outline text="多 Agent 协作">
+            <outline text="AutoGen"/>
+            <outline text="CrewAI"/>
+            <outline text="LangGraph"/>
+          </outline>
+          <outline text="浏览 / 操作系统级 Agent">
+            <outline text="Computer Use"/>
+            <outline text="Browser Agent"/>
+          </outline>
+        </outline>
+
+        <outline text="5.4 RAG 与知识增强 ★★★">
+          <outline text="Embedding 与向量库">
+            <outline text="FAISS"/>
+            <outline text="Milvus"/>
+            <outline text="Qdrant"/>
+          </outline>
+          <outline text="检索策略">
+            <outline text="BM25"/>
+            <outline text="Hybrid"/>
+            <outline text="Re-ranking"/>
+          </outline>
+          <outline text="Advanced RAG">
+            <outline text="HyDE"/>
+            <outline text="GraphRAG"/>
+            <outline text="Agentic RAG"/>
+          </outline>
+        </outline>
+
+        <outline text="5.5 MLOps 与部署 ★★★">
+          <outline text="实验管理">
+            <outline text="MLflow"/>
+            <outline text="Weights &amp; Biases"/>
+          </outline>
+          <outline text="模型注册"/>
+          <outline text="CI / CD"/>
+          <outline text="A / B 测试"/>
+          <outline text="在线 / 离线服务"/>
+          <outline text="监控"/>
+          <outline text="漂移检测"/>
+        </outline>
+
+        <outline text="5.6 AI 安全、对齐与伦理 ★★★">
+          <outline text="对齐技术全景"/>
+          <outline text="越狱与防御"/>
+          <outline text="幻觉缓解"/>
+          <outline text="隐私">
+            <outline text="差分隐私"/>
+            <outline text="联邦学习"/>
+          </outline>
+          <outline text="公平性"/>
+          <outline text="可解释性"/>
+          <outline text="合规（EU AI Act 等）"/>
+        </outline>
+      </outline>
+
+      <outline text="Part Ⅵ · 综合实战（Capstone × 3）">
+        <outline text="项目 A（ML 方向）：表格类比赛 + 可解释报告"/>
+        <outline text="项目 B（DL 方向）：小型 LLM 预训练 → 微调 → 量化部署"/>
+        <outline text="项目 C（RL 方向）：从 PPO-Atari 到 RLHF mini 复现"/>
+      </outline>
+    </outline>
+  </body>
+</opml>

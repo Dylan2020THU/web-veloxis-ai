@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-from: #fbf9f3;
+  --bg-to: #eaf3ec;
+  --ink: #1f2937;
+  --ink-soft: #4b5563;
+  --road: #f3e7c8;
+  --water: #cfe6f0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  background: radial-gradient(
+      circle at 20% 10%,
+      rgba(255, 255, 255, 0.8),
+      transparent 40%
+    ),
+    linear-gradient(135deg, var(--bg-from), var(--bg-to));
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.font-hand {
+  font-family: "Caveat", "PingFang SC", cursive;
+}
+
+svg {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.svg-text {
+  font-family: "Inter", "PingFang SC", sans-serif;
+  paint-order: stroke fill;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  fill: var(--ink);
+}
+
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: rgba(31, 41, 55, 0.18);
+  border-radius: 3px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
