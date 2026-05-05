@@ -1,5 +1,6 @@
 {
   "name": "veloxis-ai-roadmap",
+  "homepage": "https://dylan2020thu.github.io/web-veloxis-ai",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -7,6 +8,8 @@
     "node": ">=18"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "data": "node scripts/opml-to-json.mjs",
     "predev": "node scripts/opml-to-json.mjs",
     "prebuild": "node scripts/opml-to-json.mjs",
@@ -35,6 +38,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.4.45",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
