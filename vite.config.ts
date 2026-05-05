@@ -2,9 +2,11 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 
-// When deploying to https://<user>.github.io/<repo>/, every asset URL must be
-// prefixed with /<repo>/. Override at build-time by setting VITE_BASE.
-const base = process.env.VITE_BASE ?? "/web-veloxis-ai/";
+// Custom domain (www.veloxisai.com) serves the site from the root path, so
+// base is "/". If you ever go back to https://<user>.github.io/<repo>/, set
+//   $env:VITE_BASE = "/web-veloxis-ai/"
+// before running `npm run deploy`.
+const base = process.env.VITE_BASE ?? "/";
 
 export default defineConfig({
   base,
