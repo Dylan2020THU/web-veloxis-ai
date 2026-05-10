@@ -96,15 +96,13 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
     return { districts };
   }, [layout]);
 
-  // World-space center for initial fit.
+  // Camera overview / reset anchor: the decorative lake sits at world (0, 0)
+  // (see Scenery.tsx). The four districts are arranged symmetrically around it,
+  // so centering on the bbox midpoint would bias the frame — we align on the hub.
   const fit = useMemo(() => {
-    const { minX, minY, maxX, maxY } = layout.bounds;
-    const cxWorld = (minX + maxX) / 2;
-    const cyWorld = (minY + maxY) / 2;
-    // Project the center to screen-world coords.
-    const center = isoProject(cxWorld, cyWorld, 0);
+    const center = isoProject(0, 0, 0);
     return { centerSX: center.sx, centerSY: center.sy };
-  }, [layout]);
+  }, []);
 
   // ----- d3-zoom setup -----
   useEffect(() => {
@@ -137,8 +135,8 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
     svg.call(behavior).on("dblclick.zoom", null);
     zoomBehaviorRef.current = behavior;
 
-    // Set the initial transform: center the layout in the viewport at
-    // ZOOM.initial scale.
+    // Set the initial transform: center the lake hub (world origin) in the
+    // viewport at ZOOM.initial scale.
     const initial = zoomIdentity
       .translate(
         viewport.w / 2 - fit.centerSX * ZOOM.initial,
