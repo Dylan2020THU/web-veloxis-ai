@@ -74,10 +74,10 @@ function bearing(degFromNorth: number, dist: number): { x: number; y: number } {
 }
 
 const DISTRICT_POSITIONS: Record<string, { x: number; y: number }> = {
-  P1: bearing(45, 700),  // 数学广场       —— 正南
-  P2: bearing(135, 700),  // 机器意志工坊   —— 东北偏东
-  P3: bearing(225, 700),   // 深度觉醒实验室 —— 东北偏北
-  P4: bearing(315, 700),    // 强化训练竞技场 —— 西北偏北
+  P1: bearing(225, 700),  // 数学广场       —— 正南
+  P2: bearing(315, 700),  // 机器意志工坊   —— 东北偏东
+  P3: bearing(135, 700),   // 深度觉醒实验室 —— 东北偏北
+  P4: bearing(45, 700),    // 强化训练竞技场 —— 正北
 };
 
 const ALLOWED_DISTRICTS = new Set(Object.keys(DISTRICT_POSITIONS));
