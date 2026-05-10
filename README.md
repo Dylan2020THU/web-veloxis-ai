@@ -1,10 +1,14 @@
-# Veloxis AI · True Intelligence Roadmap
+# 大川激流 AI 学院 · Veloxis AI Academy
 
-一个把整套人工智能课程总图（[`AI课程总体系_True_Intelligence_v2.opml`](./AI课程总体系_True_Intelligence_v2.opml)）渲染成 **2.5D 等距校园导览图** 的学习导航站点。
+这是一个能够真正带你手把手精进人工智能的学习平台。
 
-- 类似香港中文大学（深圳）校园导览图的手绘等距风格
+- 该网站平台导览图的手绘等距风格，4 大核心学院按罗盘方位布置：
+  - **数学广场** Foundation Plaza —— 正南
+  - **机器意志工坊** Machine Will Workshop —— 东北偏东
+  - **深度觉醒实验室** Deep Awakening Lab —— 东北偏北
+  - **强化训练竞技场** Reinforcement Training Arena —— 正北
 - 像 Google Maps 的连续平滑缩放：
-  - 缩到最小 → 6 个学院区 + 主路径
+  - 缩到最小 → 4 个学院区 + 主路径
   - 中等 → 章节楼宇浮现
   - 放大 → 技术点 pin + 先修依赖路径
 - `Cmd / Ctrl + K` 全局模糊搜索，按回车直接飞到节点
@@ -44,7 +48,7 @@ npm run data
 npm run build && npm run preview
 ```
 
-打开 [http://localhost:5173](http://localhost:5173) 即可看到 Veloxis AI 首页。
+打开 [http://localhost:5173](http://localhost:5173) 即可看到大川激流 AI 学院首页。
 
 ## 项目结构
 
@@ -79,7 +83,7 @@ npm run build && npm run preview
 │   │   └── SidePanel.tsx                    点击节点后右侧详情
 │   └── data/
 │       ├── types.ts
-│       ├── theme.ts                         6 套学院主题色
+│       ├── theme.ts                         4 套学院主题色
 │       └── useRoadmap.ts                    fetch + 布局缓存
 ├── tailwind.config.ts
 ├── vite.config.ts
@@ -92,7 +96,7 @@ npm run build && npm run preview
 
 | zoom 区间 | 显示内容 |
 | --- | --- |
-| `< 0.6` | 6 个学院 + 牌坊 + 主路径 + 远山 / 湖 |
+| `< 0.6` | 4 个学院 + 牌坊 + 主路径 + 远山 / 湖 |
 | `0.6 – 1.4` | 章节楼宇（按 stars + leaf count 加权占地与高度） |
 | `1.4 – 2.4` | 技术点 pin + 先修依赖弧线 |
 | `> 2.4` | pin 图标点 + 全部标签强显 |
@@ -103,7 +107,7 @@ npm run build && npm run preview
 
 详见 [`src/map/layout.ts`](src/map/layout.ts)：
 
-1. 顶层 7 个区（P0–P6）固定到一个 3×3 网格，留出 (1,1) 给湖、(0,2) 给空地。
+1. 顶层 4 个区（P1–P4）按罗盘方位（bearing-from-north + 距离）放置在等距投影后的世界坐标里，西南留白给湖。
 2. 区内章节用 `d3.treemap().tile(treemapSquarify)` 按预计算的叶子数加权摆放——内容多的章节自动占地更大。
 3. 每个章节生成一个等距盒子（`half`、`height` 由 stars + leaf count 决定）；3 星以上为 landmark，顶部加光带。
 4. 章节下的叶子节点围绕楼宇做半径递增的同心环 pin。

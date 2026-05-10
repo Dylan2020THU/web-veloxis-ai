@@ -1,10 +1,10 @@
 // Pure deterministic layout: roadmap tree -> world-space coordinates.
 //
-// Two-stage placement:
-//  1. Each top-level child (P0..P6) gets a fixed cell in a 3x3 grid that
-//     traces the "learning path" from west (Foundation) to southeast (Capstone
-//     Harbor). A gentle Y offset for odd columns makes the layout feel less
-//     gridlike, more like a real campus.
+// Three-stage placement:
+//  1. The four core departments (P1..P4) are placed by compass bearing on the
+//     iso plane (see DISTRICT_POSITIONS). The pedagogical learning path
+//     P1 → P2 → P3 → P4 sweeps from the southern entrance up to the northern
+//     RL arena, with ML and DL forming the north-east wing.
 //  2. Inside a district, child chapters are placed via d3-hierarchy's treemap
 //     (squarify), so chapters with more sub-content occupy bigger plots. The
 //     chapter footprint becomes a "building" centered in its treemap cell;
@@ -32,24 +32,58 @@ import type {
   RoadmapLayout,
   RoadmapNode,
 } from "@/data/types";
+import { ISO_COS, ISO_SIN } from "./iso";
 import { WORLD } from "./tokens";
 
-// 3x3 grid cells (col, row). The 7 districts occupy 7 cells; we leave the
-// other 2 empty so far-corner mountain decoration has room to breathe.
+// Veloxis AI Academy keeps only the four core departments. They are placed in
+// the four cardinal directions on the iso plane, with a central lake at the
+// origin acting as the campus' visual anchor:
 //
-// Layout (col,row), origin top-left:
-//   (0,0) P1 Foundation   (1,0) P2 Machine Will   (2,0) P3 Deep Awakening
-//   (0,1) P0 Orientation  (1,1) (empty - lake)    (2,1) P5 Horizontal Stack
-//   (0,2) (empty)         (1,2) P4 Decision       (2,2) P6 Capstone Harbor
-const GRID_CELLS: Record<string, { col: number; row: number }> = {
-  P1: { col: 0, row: 0 },
-  P2: { col: 1, row: 0 },
-  P3: { col: 2, row: 0 },
-  P0: { col: 0, row: 1 },
-  P5: { col: 2, row: 1 },
-  P4: { col: 1, row: 2 },
-  P6: { col: 2, row: 2 },
+//                          ┌───────────────────────┐
+//                          │ P4 Reinforcement Arena│        ← North
+//                          └───────────────────────┘
+//                                       │
+//      ┌──────────────────┐         ╭───┴───╮         ┌───────────────────┐
+//      │ P2 Machine Will  │ ──── W  │  Lake │  E ──── │ P3 Deep Awakening │
+//      │   Workshop       │         ╰───┬───╯         │       Lab         │
+//      └──────────────────┘             │             └───────────────────┘
+//                                       │
+//                          ┌──────────────────┐
+//                          │ P1 Math Plaza    │       ← South
+//                          └──────────────────┘
+//
+// Roads radiate from the central lake to each department (drawn in
+// Scenery.tsx). The lake is rendered on top of the road convergence so the
+// visual reads as four spokes terminating at a circular pond.
+
+/**
+ * Convert a (bearing-from-screen-north, distance) pair into world-space (x, y)
+ * coordinates such that after iso projection the resulting point lies at the
+ * given bearing on the screen. This lets us describe district positions in
+ * intuitive compass terms:
+ *   - 0°  → screen up  (正北)
+ *   - 90° → screen right (正东)
+ *   - 180° → screen down (正南)
+ */
+function bearing(degFromNorth: number, dist: number): { x: number; y: number } {
+  const θ = (degFromNorth * Math.PI) / 180;
+  return {
+    x: (dist / 2) * (Math.sin(θ) / ISO_COS - Math.cos(θ) / ISO_SIN),
+    y: (dist / 2) * (-Math.sin(θ) / ISO_COS - Math.cos(θ) / ISO_SIN),
+  };
+}
+
+const DISTRICT_POSITIONS: Record<string, { x: number; y: number }> = {
+  P1: bearing(180, 700),  // 数学广场       —— 正南
+  P2: bearing(270, 700),  // 机器意志工坊   —— 正西
+  P3: bearing(90, 700),   // 深度觉醒实验室 —— 正东
+  P4: bearing(0, 700),    // 强化训练竞技场 —— 正北
 };
+
+const ALLOWED_DISTRICTS = new Set(Object.keys(DISTRICT_POSITIONS));
+
+/** Canonical learning path used by the road / mini-map / animations. */
+export const DISTRICT_PATH = ["P1", "P2", "P3", "P4"];
 
 function rebuildParentLinks(node: RoadmapNode, parent: RoadmapNode | null) {
   // RoadmapNode is plain JSON when loaded; ensure parentId is set even if
@@ -182,31 +216,31 @@ function placeBuildings(
 }
 
 export function buildLayout(doc: RoadmapDoc): RoadmapLayout {
-  const root = doc.root;
+  // Prune the tree to the 4 districts we actually render. Keeping the unused
+  // OPML branches in `byId` would let search hit them and silently fail to fly
+  // (their positions never get registered). Filtering at this boundary keeps
+  // the rest of the layout / search / sidebar code blissfully unaware that
+  // anything was dropped.
+  const root: RoadmapNode = {
+    ...doc.root,
+    children: doc.root.children.filter((c) => ALLOWED_DISTRICTS.has(c.id)),
+  };
   rebuildParentLinks(root, null);
   const { byId, all } = buildIndex(root);
 
-  // -------- 1. Place districts on the 3x3 grid --------
-  const cellSize = WORLD.districtHalf * 2 + WORLD.districtGap;
+  // -------- 1. Place districts by compass bearing --------
   const districts: PlacedDistrict[] = [];
 
-  // The "main learning path" order, used for animations and connecting paths.
-  const PATH = ["P0", "P1", "P2", "P3", "P4", "P5", "P6"];
-
   root.children.forEach((child) => {
-    const cell = GRID_CELLS[child.id];
-    if (!cell) return; // unknown top-level — skip
-    const cx = (cell.col - 1) * cellSize;
-    // Slight y-jitter on odd columns so the layout feels more "campus" than "grid"
-    const jitter = cell.col === 1 ? -22 : cell.col === 2 ? 14 : 0;
-    const cy = (cell.row - 1) * cellSize + jitter;
+    const pos = DISTRICT_POSITIONS[child.id];
+    if (!pos) return;
     districts.push({
       node: child,
-      cx,
-      cy,
+      cx: pos.x,
+      cy: pos.y,
       half: WORLD.districtHalf,
       themeId: child.id,
-      order: PATH.indexOf(child.id),
+      order: DISTRICT_PATH.indexOf(child.id),
     });
   });
 

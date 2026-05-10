@@ -21,7 +21,7 @@ function pickDistrictId(node: RoadmapNode, byId: Map<string, RoadmapNode>) {
   while (cur && cur.parentId && cur.parentId !== "root") {
     cur = byId.get(cur.parentId);
   }
-  return cur?.id ?? "P0";
+  return cur?.id ?? "P1";
 }
 
 export function SearchBar({ open, layout, onClose, onPick }: Props) {

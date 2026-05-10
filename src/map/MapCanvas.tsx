@@ -3,9 +3,9 @@
 // Architecture:
 //   <svg> (full screen)
 //     <g class="world" [transform from d3-zoom]>
-//       <Scenery />              // mountains, lake, main road
+//       <Scenery />              // ground, lake, main roads
 //       <g class="districts" />  // L0
-//       <g class="dependencies" />
+//       <g class="dependencies" />  // prereq edges; same LOD as pins (zoom in)
 //       <g class="buildings" />  // L1
 //       <g class="pins" />       // L2
 //     </g>
@@ -260,13 +260,8 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
           ))}
         </g>
 
-        {lod.showBuildings && (
-          <g
-            className="dependencies"
-            style={{
-              opacity: Math.min(lod.buildingOpacity, lod.pinOpacity + 0.4),
-            }}
-          >
+        {lod.showPins && (
+          <g className="dependencies" style={{ opacity: lod.pinOpacity }}>
             {layout.dependencies.map((dep, i) => (
               <DependencyEdge
                 key={`${dep.fromId}->${dep.toId}-${i}`}

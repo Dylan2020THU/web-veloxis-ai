@@ -20,20 +20,10 @@ export interface DistrictTheme {
 }
 
 export const DISTRICT_THEMES: Record<string, DistrictTheme> = {
-  P0: {
-    id: "P0",
-    name: "Orientation Plaza",
-    subtitle: "课程总览",
-    ground: ["#f6efe2", "#ede1c8"],
-    roof: "#d5b78d",
-    side: "#a98762",
-    accent: "#b1672a",
-    ink: "#3f2d18",
-  },
   P1: {
     id: "P1",
     name: "Foundation Plaza",
-    subtitle: "数学基础",
+    subtitle: "数学广场",
     ground: ["#eef4eb", "#dceadb"],
     roof: "#a8c79a",
     side: "#6f9968",
@@ -42,8 +32,8 @@ export const DISTRICT_THEMES: Record<string, DistrictTheme> = {
   },
   P2: {
     id: "P2",
-    name: "Machine Will District",
-    subtitle: "机器学习",
+    name: "Machine Will Workshop",
+    subtitle: "机器意志工坊",
     ground: ["#f3eef7", "#e3d6ee"],
     roof: "#b59cd1",
     side: "#7d68a3",
@@ -52,8 +42,8 @@ export const DISTRICT_THEMES: Record<string, DistrictTheme> = {
   },
   P3: {
     id: "P3",
-    name: "Deep Awakening Tower",
-    subtitle: "深度学习",
+    name: "Deep Awakening Lab",
+    subtitle: "深度觉醒实验室",
     ground: ["#e8eef8", "#cfdcef"],
     roof: "#7fa5d6",
     side: "#4d6fa6",
@@ -62,33 +52,13 @@ export const DISTRICT_THEMES: Record<string, DistrictTheme> = {
   },
   P4: {
     id: "P4",
-    name: "Decision Awakening Arena",
-    subtitle: "强化学习",
+    name: "Reinforcement Training Arena",
+    subtitle: "强化训练竞技场",
     ground: ["#fbeee0", "#f4d6b5"],
     roof: "#e29a6f",
     side: "#b06438",
     accent: "#a83b1b",
     ink: "#451c0c",
-  },
-  P5: {
-    id: "P5",
-    name: "Horizontal Stack Lab",
-    subtitle: "横向能力栈",
-    ground: ["#eaf2f3", "#cfe1e3"],
-    roof: "#85b6b8",
-    side: "#4f8385",
-    accent: "#266b6e",
-    ink: "#0f3132",
-  },
-  P6: {
-    id: "P6",
-    name: "Capstone Harbor",
-    subtitle: "综合实战",
-    ground: ["#eef4f9", "#cee2f0"],
-    roof: "#7eb1d6",
-    side: "#3f6f95",
-    accent: "#1a4f7a",
-    ink: "#0f2a40",
   },
 };
 

@@ -36,9 +36,6 @@ export const COLOR = {
   pinShadow: "rgba(31,41,55,0.18)",
   ink: "#1f2937",
   inkSoft: "#4b5563",
-  // far-mountain decoration
-  mountainFar: "#cdd9c8",
-  mountainNear: "#b9cab2",
 };
 
-export const PATH_ORDER = ["P0", "P1", "P2", "P3", "P4", "P5", "P6"];
+export const PATH_ORDER = ["P1", "P2", "P3", "P4"];

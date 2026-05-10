@@ -26,7 +26,7 @@ function pickDistrictId(node: RoadmapNode, layout: RoadmapLayout): string {
   while (cur && cur.parentId && cur.parentId !== "root") {
     cur = layout.byId.get(cur.parentId);
   }
-  return cur?.id ?? "P0";
+  return cur?.id ?? "P1";
 }
 
 export function SidePanel({ nodeId, layout, onClose, onJumpTo }: Props) {

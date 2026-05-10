@@ -65,7 +65,7 @@ export default function HomeMap() {
         onSelect={(id) => setSelectedId(id)}
         onZoomChange={setZoom}
       />
-      <TopBar stats={doc.stats} />
+      <TopBar />
       <ZoomControls
         zoom={zoom}
         onZoomIn={() => canvasRef.current?.zoomBy(1.4)}

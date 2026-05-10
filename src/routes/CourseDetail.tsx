@@ -12,7 +12,7 @@ function pickDistrictId(
   while (cur && cur.parentId && cur.parentId !== "root") {
     cur = byId.get(cur.parentId);
   }
-  return cur?.id ?? "P0";
+  return cur?.id ?? "P1";
 }
 
 export default function CourseDetail() {

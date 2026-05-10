@@ -1,25 +1,14 @@
-import type { RoadmapStats } from "@/data/types";
+const LOGO_BASE = import.meta.env.BASE_URL + "brand/logo-base.png";
 
-interface Props {
-  stats?: RoadmapStats;
-}
-
-export function TopBar({ stats }: Props) {
+export function TopBar() {
   return (
-    <header className="absolute left-6 top-6 z-10 rounded-2xl bg-white/90 px-4 py-3 shadow-soft backdrop-blur">
-      <div className="flex items-baseline gap-3">
-        <h1 className="font-hand text-2xl font-bold text-ink">
-          Veloxis<span className="text-ink/40"> · </span>
-          <span style={{ color: "#5b3fa0" }}>AI</span>
-        </h1>
-        <span className="text-xs text-ink/55">True Intelligence Roadmap</span>
-      </div>
-      {stats && (
-        <div className="mt-1 text-[11px] text-ink/55">
-          {stats.districts} 个学院 · {stats.totalNodes} 个节点 ·{" "}
-          {stats.leafNodes} 个技术点
-        </div>
-      )}
+    <header className="absolute left-6 top-6 z-10 rounded-2xl bg-white/90 p-2 shadow-soft backdrop-blur">
+      <img
+        src={LOGO_BASE}
+        alt="大川激流人工智能基地"
+        className="block h-8 w-auto select-none"
+        draggable={false}
+      />
     </header>
   );
 }
