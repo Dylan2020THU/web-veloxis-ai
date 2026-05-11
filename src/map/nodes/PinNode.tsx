@@ -5,6 +5,7 @@ import { isoProject } from "@/map/iso";
 
 interface Props {
   pin: PlacedPin;
+  mapRotationDeg?: number;
   opacity: number;
   selected: boolean;
   onSelect: (id: string) => void;
@@ -12,7 +13,15 @@ interface Props {
   showIcons: boolean;
 }
 
-function PinNodeImpl({ pin, opacity, selected, onSelect, zoom, showIcons }: Props) {
+function PinNodeImpl({
+  pin,
+  mapRotationDeg = 0,
+  opacity,
+  selected,
+  onSelect,
+  zoom,
+  showIcons,
+}: Props) {
   const [hover, setHover] = useState(false);
   const theme = themeFor(pin.districtId);
   const headHeight = hover || selected ? 18 : 14;
@@ -67,7 +76,7 @@ function PinNodeImpl({ pin, opacity, selected, onSelect, zoom, showIcons }: Prop
 
       {(hover || selected || zoom > 2.0) && (
         <g
-          transform={`translate(${head.sx}, ${head.sy - 12})`}
+          transform={`translate(${head.sx}, ${head.sy - 12}) rotate(${-mapRotationDeg})`}
           pointerEvents="none"
         >
           <text

@@ -5,12 +5,19 @@ import { isoPolygon, toPointsAttr } from "@/map/iso";
 
 interface Props {
   district: PlacedDistrict;
+  /** Counter-rotate labels by this angle (matches MapCanvas viewport rotation, deg). */
+  mapRotationDeg?: number;
   /** Visual emphasis 0..1 (1 = fully highlighted, 0 = dim other districts). */
   highlight?: number;
   onSelect?: (id: string) => void;
 }
 
-function DistrictShapeImpl({ district, highlight = 1, onSelect }: Props) {
+function DistrictShapeImpl({
+  district,
+  mapRotationDeg = 0,
+  highlight = 1,
+  onSelect,
+}: Props) {
   const theme = themeFor(district.themeId);
   const { cx, cy, half } = district;
 
@@ -73,7 +80,9 @@ function DistrictShapeImpl({ district, highlight = 1, onSelect }: Props) {
       />
 
       <g
-        transform={`translate(${archCenter.sx}, ${archCenter.sy})`}
+        transform={`translate(${archCenter.sx}, ${archCenter.sy}) rotate(${-mapRotationDeg} 0 ${
+          -archHeight / 2 - 1
+        })`}
         pointerEvents="none"
       >
         <rect

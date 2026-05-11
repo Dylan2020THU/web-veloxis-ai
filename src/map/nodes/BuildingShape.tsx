@@ -5,6 +5,8 @@ import { isoBoxPaths, isoProject } from "@/map/iso";
 
 interface Props {
   building: PlacedBuilding;
+  /** Counter-rotate labels (deg), same semantics as DistrictShape / MapCanvas. */
+  mapRotationDeg?: number;
   /** Pass-through opacity (driven by LOD). */
   opacity: number;
   /** Whether this building is currently selected (clicked). */
@@ -16,6 +18,7 @@ interface Props {
 
 function BuildingShapeImpl({
   building,
+  mapRotationDeg = 0,
   opacity,
   selected,
   onSelect,
@@ -101,7 +104,7 @@ function BuildingShapeImpl({
 
       {showLabel && (
         <g
-          transform={`translate(${labelAnchor.sx}, ${labelAnchor.sy - 6})`}
+          transform={`translate(${labelAnchor.sx}, ${labelAnchor.sy - 6}) rotate(${-mapRotationDeg} 0 ${showStars ? 5.5 : 0})`}
           pointerEvents="none"
         >
           <text

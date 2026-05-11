@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { pickVisible } from "@/map/lod";
 
 interface Props {
@@ -15,6 +16,7 @@ export function ZoomControls({
   onReset,
   onOpenSearch,
 }: Props) {
+  const [searchHovered, setSearchHovered] = useState(false);
   const lod = pickVisible(zoom);
   return (
     <div className="absolute bottom-6 left-6 z-10 flex flex-col gap-2">
@@ -41,16 +43,22 @@ export function ZoomControls({
           重置
         </button>
         <button
-          aria-label="search"
+          type="button"
+          aria-label={searchHovered ? "全局搜索（快捷键 Ctrl+F）" : "全局搜索"}
           onClick={onOpenSearch}
-          className="h-9 rounded-xl bg-ink px-3 text-sm font-semibold text-white hover:opacity-90"
+          onMouseEnter={() => setSearchHovered(true)}
+          onMouseLeave={() => setSearchHovered(false)}
+          className="h-9 min-w-[5.5rem] rounded-xl bg-ink px-3 text-center text-sm font-semibold text-white hover:opacity-90"
         >
-          搜索 ⌘K
+          {searchHovered ? "Ctrl+F" : "搜索"}
         </button>
       </div>
       <div className="rounded-xl bg-white/85 px-3 py-1.5 text-xs text-ink/70 shadow-soft">
         {lod.hint}
         <span className="ml-2 text-ink/40">×{zoom.toFixed(2)}</span>
+        <div className="mt-1 text-[11px] text-ink/45">
+          Ctrl / Alt + 拖拽 旋转朝向
+        </div>
       </div>
     </div>
   );

@@ -96,7 +96,7 @@ export function SearchBar({ open, layout, onClose, onPick }: Props) {
             className="w-[min(640px,90vw)] overflow-hidden rounded-2xl bg-white shadow-soft"
           >
             <div className="flex items-center gap-3 border-b border-black/5 px-4 py-3">
-              <span className="text-ink/50">⌘K</span>
+              <span className="text-ink/50">Ctrl+F</span>
               <input
                 ref={inputRef}
                 value={q}

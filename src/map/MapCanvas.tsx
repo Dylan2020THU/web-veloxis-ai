@@ -2,18 +2,22 @@
 //
 // Architecture:
 //   <svg> (full screen)
-//     <g class="world" [transform from d3-zoom]>
+//     <g class="rotate-wrap" [rotate(θ, cx, cy)]>   // Ctrl/Alt + drag; pivot = viewport center
+//       <g class="world" [translate + scale from d3-zoom]>
 //       <Scenery />              // ground, lake, main roads
 //       <g class="districts" />  // L0
 //       <g class="dependencies" />  // prereq edges; same LOD as pins (zoom in)
 //       <g class="buildings" />  // L1
 //       <g class="pins" />       // L2
+//       </g>
 //     </g>
 //
 // The d3-zoom instance lives outside React state to avoid re-renders during
 // user pan/zoom. Whenever the transform changes we mutate the world <g>'s
 // transform attribute directly *and* push the latest k into a tiny piece of
 // React state (throttled by rAF) so LOD-driven opacities can update.
+// Map rotation likewise lives in a ref on the outer <g>; degrees are mirrored
+// into React (rAF, same as zoom) so labels can counter-rotate (billboard text).
 
 import {
   forwardRef,
@@ -66,8 +70,12 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
   ref
 ) {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const rotateWrapRef = useRef<SVGGElement | null>(null);
   const worldRef = useRef<SVGGElement | null>(null);
   const zoomBehaviorRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  /** Viewport rotation (rad), pivot = screen center. Kept in a ref so pan/zoom stays off React render. */
+  const rotationRadRef = useRef(0);
+  const viewportRef = useRef({ w: 1280, h: 800 });
 
   const [viewport, setViewport] = useState<{ w: number; h: number }>({
     w: typeof window === "undefined" ? 1280 : window.innerWidth,
@@ -78,6 +86,10 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
   const [zoomK, setZoomK] = useState<number>(ZOOM.initial);
   const pendingFrame = useRef<number | null>(null);
 
+  /** Same angle (deg) as rotate-wrap; synced on rAF so <text> can apply -angle and stay horizontal on screen. */
+  const [mapRotationDeg, setMapRotationDeg] = useState(0);
+  const pendingRotFrame = useRef<number | null>(null);
+
   // ----- Resize observer -----
   useLayoutEffect(() => {
     const onResize = () =>
@@ -86,6 +98,29 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  viewportRef.current = viewport;
+
+  const scheduleMapRotationDeg = useCallback(() => {
+    if (pendingRotFrame.current != null) return;
+    pendingRotFrame.current = requestAnimationFrame(() => {
+      pendingRotFrame.current = null;
+      setMapRotationDeg((rotationRadRef.current * 180) / Math.PI);
+    });
+  }, []);
+
+  const syncRotateWrap = useCallback(() => {
+    const g = rotateWrapRef.current;
+    if (!g) return;
+    const { w, h } = viewportRef.current;
+    const deg = (rotationRadRef.current * 180) / Math.PI;
+    g.setAttribute("transform", `rotate(${deg} ${w / 2} ${h / 2})`);
+    scheduleMapRotationDeg();
+  }, [scheduleMapRotationDeg]);
+
+  useLayoutEffect(() => {
+    syncRotateWrap();
+  }, [viewport, syncRotateWrap]);
 
   // ----- Iso-projected layout points (memoized) -----
   const projected = useMemo(() => {
@@ -115,7 +150,12 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
       .filter((event: any) => {
         // Allow wheel zoom anywhere; allow primary-button drag for panning.
         if (event.type === "wheel") return true;
-        if (event.type === "mousedown") return event.button === 0;
+        if (event.type === "mousedown") {
+          if (event.button !== 0) return false;
+          // Ctrl / Alt + drag = rotate (Google Maps–style); don't pan with d3.
+          if (event.ctrlKey || event.altKey) return false;
+          return true;
+        }
         if (event.type === "touchstart") return true;
         return !event.button;
       })
@@ -154,6 +194,103 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // ----- Ctrl / Alt + drag: rotate around viewport center -----
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+
+    let dragging = false;
+    let startPointerAngle = 0;
+    let startRotation = 0;
+    let startX = 0;
+    let startY = 0;
+    let suppressClick = false;
+
+    const pivot = () => {
+      const { w, h } = viewportRef.current;
+      return { cx: w / 2, cy: h / 2 };
+    };
+
+    const pointerAngle = (ev: PointerEvent) => {
+      const rect = svg.getBoundingClientRect();
+      const sx = ((ev.clientX - rect.left) / rect.width) * svg.clientWidth;
+      const sy = ((ev.clientY - rect.top) / rect.height) * svg.clientHeight;
+      const { cx, cy } = pivot();
+      return Math.atan2(sy - cy, sx - cx);
+    };
+
+    const onPointerDown = (ev: PointerEvent) => {
+      if (ev.button !== 0) return;
+      if (!ev.ctrlKey && !ev.altKey) return;
+      ev.preventDefault();
+      dragging = true;
+      suppressClick = false;
+      startPointerAngle = pointerAngle(ev);
+      startRotation = rotationRadRef.current;
+      startX = ev.clientX;
+      startY = ev.clientY;
+      try {
+        svg.setPointerCapture(ev.pointerId);
+      } catch {
+        /* ignore */
+      }
+    };
+
+    const onPointerMove = (ev: PointerEvent) => {
+      if (!dragging) return;
+      ev.preventDefault();
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      if (dx * dx + dy * dy > 9) suppressClick = true;
+      const a = pointerAngle(ev);
+      rotationRadRef.current = startRotation + (a - startPointerAngle);
+      syncRotateWrap();
+    };
+
+    const endDrag = (ev: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      try {
+        svg.releasePointerCapture(ev.pointerId);
+      } catch {
+        /* ignore */
+      }
+    };
+
+    const onPointerUp = (ev: PointerEvent) => {
+      endDrag(ev);
+    };
+
+    const onPointerCancel = (ev: PointerEvent) => {
+      endDrag(ev);
+    };
+
+    const onClickCapture = (ev: MouseEvent) => {
+      if (!suppressClick) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      suppressClick = false;
+    };
+
+    svg.addEventListener("pointerdown", onPointerDown);
+    svg.addEventListener("pointermove", onPointerMove);
+    svg.addEventListener("pointerup", onPointerUp);
+    svg.addEventListener("pointercancel", onPointerCancel);
+    svg.addEventListener("click", onClickCapture, true);
+
+    return () => {
+      svg.removeEventListener("pointerdown", onPointerDown);
+      svg.removeEventListener("pointermove", onPointerMove);
+      svg.removeEventListener("pointerup", onPointerUp);
+      svg.removeEventListener("pointercancel", onPointerCancel);
+      svg.removeEventListener("click", onClickCapture, true);
+      if (pendingRotFrame.current != null) {
+        cancelAnimationFrame(pendingRotFrame.current);
+        pendingRotFrame.current = null;
+      }
+    };
+  }, [syncRotateWrap]);
+
   // ----- Camera helpers (imperative handle) -----
   const flyTo = useCallback(
     (id: string, opts?: { zoom?: number; durationMs?: number }) => {
@@ -183,6 +320,9 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
       const svg = svgRef.current;
       const beh = zoomBehaviorRef.current;
       if (!svg || !beh) return;
+      rotationRadRef.current = 0;
+      syncRotateWrap();
+      setMapRotationDeg(0);
       const target = zoomIdentity
         .translate(
           viewport.w / 2 - fit.centerSX * ZOOM.initial,
@@ -194,7 +334,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
         .duration(durationMs)
         .call(beh.transform as any, target);
     },
-    [fit, viewport]
+    [fit, viewport, syncRotateWrap]
   );
 
   const zoomBy = useCallback((factor: number) => {
@@ -242,7 +382,8 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
       style={{ position: "absolute", inset: 0, display: "block" }}
       onClick={() => onSelect(null)}
     >
-      <g ref={worldRef} className="world">
+      <g ref={rotateWrapRef} className="rotate-wrap">
+        <g ref={worldRef} className="world">
         <Scenery layout={layout} />
 
         <g className="districts">
@@ -250,6 +391,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
             <DistrictShape
               key={d.node.id}
               district={d}
+              mapRotationDeg={mapRotationDeg}
               highlight={
                 !focusDistrictId || focusDistrictId === d.node.id ? 1 : 0.35
               }
@@ -282,6 +424,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
               <BuildingShape
                 key={b.node.id}
                 building={b}
+                mapRotationDeg={mapRotationDeg}
                 opacity={1}
                 selected={selectedId === b.node.id}
                 onSelect={onSelect}
@@ -297,6 +440,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
               <PinNode
                 key={p.node.id}
                 pin={p}
+                mapRotationDeg={mapRotationDeg}
                 opacity={1}
                 selected={selectedId === p.node.id}
                 onSelect={onSelect}
@@ -306,6 +450,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
             ))}
           </g>
         )}
+        </g>
       </g>
     </svg>
   );

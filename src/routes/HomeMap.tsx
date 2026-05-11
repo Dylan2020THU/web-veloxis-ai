@@ -15,19 +15,22 @@ export default function HomeMap() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [zoom, setZoom] = useState(ZOOM.initial);
 
-  // Cmd/Ctrl + K opens search.
+  // Ctrl + F opens search (capture phase tries to beat the browser Find bar).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      const isCtrlF =
+        e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === "f";
+      if (isCtrlF) {
         e.preventDefault();
+        e.stopPropagation();
         setSearchOpen(true);
       } else if (e.key === "Escape") {
         setSearchOpen(false);
         setSelectedId(null);
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
   }, []);
 
   const handleJumpTo = useCallback((id: string) => {
