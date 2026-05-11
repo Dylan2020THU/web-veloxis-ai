@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import type { PlacedBuilding } from "@/data/types";
 import { themeFor } from "@/data/theme";
 import { isoBoxPaths, isoProject } from "@/map/iso";
+import { screenStableScale } from "@/map/tokens";
 
 interface Props {
   building: PlacedBuilding;
@@ -36,6 +37,7 @@ function BuildingShapeImpl({
   );
 
   const labelAnchor = topCenter;
+  const inv = screenStableScale(zoom);
 
   const showLabel = zoom > 0.85;
   const showStars = zoom > 1.1 && building.node.stars > 0;
@@ -103,30 +105,31 @@ function BuildingShapeImpl({
       })()}
 
       {showLabel && (
-        <g
-          transform={`translate(${labelAnchor.sx}, ${labelAnchor.sy - 6}) rotate(${-mapRotationDeg} 0 ${showStars ? 5.5 : 0})`}
-          pointerEvents="none"
-        >
-          <text
-            textAnchor="middle"
-            className="svg-text"
-            style={{
-              fontSize: 9.5,
-              fontWeight: 600,
-              fill: theme.ink,
-            }}
+        <g transform={`translate(${labelAnchor.sx}, ${labelAnchor.sy - 6})`} pointerEvents="none">
+          <g
+            transform={`scale(${inv}) rotate(${-mapRotationDeg} 0 ${showStars ? 5.5 : 0})`}
           >
-            {building.node.label}
-          </text>
-          {showStars && (
             <text
-              y={11}
               textAnchor="middle"
-              style={{ fontSize: 8, fill: theme.accent, fontWeight: 700 }}
+              className="svg-text"
+              style={{
+                fontSize: 20,
+                fontWeight: 600,
+                fill: theme.ink,
+              }}
             >
-              {"★".repeat(Math.min(4, building.node.stars))}
+              {building.node.label}
             </text>
-          )}
+            {showStars && (
+              <text
+                y={11}
+                textAnchor="middle"
+                style={{ fontSize: 8, fill: theme.accent, fontWeight: 700 }}
+              >
+                {"★".repeat(Math.min(4, building.node.stars))}
+              </text>
+            )}
+          </g>
         </g>
       )}
     </g>

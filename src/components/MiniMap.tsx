@@ -59,7 +59,7 @@ export function MiniMap({ layout, onJumpTo }: Props) {
           y={0}
           width={MM_W}
           height={MM_H}
-          fill="#fbf9f3"
+          fill="#dceef3"
           rx={10}
         />
         <g transform={`translate(${data.tx}, ${data.ty}) scale(${data.s})`}>

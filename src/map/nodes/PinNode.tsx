@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import type { PlacedPin } from "@/data/types";
 import { themeFor } from "@/data/theme";
 import { isoProject } from "@/map/iso";
+import { screenStableScale } from "@/map/tokens";
 
 interface Props {
   pin: PlacedPin;
@@ -29,6 +30,7 @@ function PinNodeImpl({
   const foot = isoProject(pin.cx, pin.cy, 0);
 
   const r = selected ? 5.2 : 4.4;
+  const inv = screenStableScale(zoom);
 
   return (
     <g
@@ -75,21 +77,20 @@ function PinNodeImpl({
       )}
 
       {(hover || selected || zoom > 2.0) && (
-        <g
-          transform={`translate(${head.sx}, ${head.sy - 12}) rotate(${-mapRotationDeg})`}
-          pointerEvents="none"
-        >
-          <text
-            textAnchor="middle"
-            className="svg-text"
-            style={{
-              fontSize: 8.5,
-              fontWeight: 600,
-              fill: theme.ink,
-            }}
-          >
-            {pin.node.label}
-          </text>
+        <g transform={`translate(${head.sx}, ${head.sy - 12})`} pointerEvents="none">
+          <g transform={`scale(${inv}) rotate(${-mapRotationDeg})`}>
+            <text
+              textAnchor="middle"
+              className="svg-text"
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+                fill: theme.ink,
+              }}
+            >
+              {pin.node.label}
+            </text>
+          </g>
         </g>
       )}
     </g>

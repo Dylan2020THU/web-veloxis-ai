@@ -391,6 +391,7 @@ export const MapCanvas = forwardRef<MapCanvasHandle, Props>(function MapCanvas(
             <DistrictShape
               key={d.node.id}
               district={d}
+              zoom={zoomK}
               mapRotationDeg={mapRotationDeg}
               highlight={
                 !focusDistrictId || focusDistrictId === d.node.id ? 1 : 0.35

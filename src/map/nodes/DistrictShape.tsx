@@ -2,9 +2,12 @@ import { memo } from "react";
 import type { PlacedDistrict } from "@/data/types";
 import { themeFor } from "@/data/theme";
 import { isoPolygon, toPointsAttr } from "@/map/iso";
+import { screenStableScale } from "@/map/tokens";
 
 interface Props {
   district: PlacedDistrict;
+  /** Current world zoom factor k (inverse-scales labels for constant screen px). */
+  zoom: number;
   /** Counter-rotate labels by this angle (matches MapCanvas viewport rotation, deg). */
   mapRotationDeg?: number;
   /** Visual emphasis 0..1 (1 = fully highlighted, 0 = dim other districts). */
@@ -14,12 +17,16 @@ interface Props {
 
 function DistrictShapeImpl({
   district,
+  zoom,
   mapRotationDeg = 0,
   highlight = 1,
   onSelect,
 }: Props) {
   const theme = themeFor(district.themeId);
   const { cx, cy, half } = district;
+  const inv = screenStableScale(zoom);
+
+  const archHeight = 32;
 
   const ground: Array<[number, number]> = [
     [cx - half, cy - half],
@@ -40,7 +47,6 @@ function DistrictShapeImpl({
   const innerProj = isoPolygon(inner, 0);
 
   const archCenter = isoPolygon([[cx, cy - half - 6]], 0)[0];
-  const archHeight = 32;
   const archHalfW = 78;
 
   return (
@@ -79,12 +85,7 @@ function DistrictShapeImpl({
         strokeDasharray="2 4"
       />
 
-      <g
-        transform={`translate(${archCenter.sx}, ${archCenter.sy}) rotate(${-mapRotationDeg} 0 ${
-          -archHeight / 2 - 1
-        })`}
-        pointerEvents="none"
-      >
+      <g transform={`translate(${archCenter.sx}, ${archCenter.sy})`} pointerEvents="none">
         <rect
           x={-archHalfW}
           y={-archHeight - 4}
@@ -103,24 +104,28 @@ function DistrictShapeImpl({
           fill={theme.accent}
           opacity={0.85}
         />
-        <text
-          x={0}
-          y={-archHeight / 2 - 6}
-          textAnchor="middle"
-          className="svg-text"
-          style={{ fontSize: 13, fontWeight: 700, fill: theme.ink }}
+        <g
+          transform={`scale(${inv}) rotate(${-mapRotationDeg} 0 ${-archHeight / 2 - 1})`}
         >
-          {theme.name}
-        </text>
-        <text
-          x={0}
-          y={-archHeight / 2 + 8}
-          textAnchor="middle"
-          className="svg-text"
-          style={{ fontSize: 10.5, fontWeight: 500, fill: theme.ink, opacity: 0.85 }}
-        >
-          {theme.subtitle}
-        </text>
+          <text
+            x={0}
+            y={-archHeight / 2 + 16}
+            textAnchor="middle"
+            className="svg-text"
+            style={{ fontSize: 28, fontWeight: 500, fill: theme.ink, opacity: 0.85 }}
+          >
+            {theme.name}
+          </text>
+          <text
+            x={0}
+            y={-archHeight / 2 - 16}
+            textAnchor="middle"
+            className="svg-text"
+            style={{ fontSize: 26, fontWeight: 700, fill: theme.ink }}
+          >
+            {theme.subtitle}
+          </text>
+        </g>
       </g>
     </g>
   );
